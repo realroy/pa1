@@ -1,3 +1,4 @@
+package com.pa1.roiboon;
 
 public enum UnitType {
 	LENGTH(Length.values()),

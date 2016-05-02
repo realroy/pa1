@@ -1,3 +1,4 @@
+package com.pa1.roiboon;
 /**
  * @author Roiboon Chaiyachit
  */
@@ -12,6 +13,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import java.awt.Color;
+import javax.swing.JMenuItem;
 
 
 @SuppressWarnings("serial")
@@ -21,15 +26,21 @@ public class App extends JFrame {
 	private JLabel 				equalLabel;
 	private JTextField 			rightTextField;
 	private JTextField 			leftTextField;
-	private JComboBox<Object> 	leftComboBox;
-	private JComboBox<Object> 	rightComboBox;
+	static  JComboBox<Object> 	leftComboBox;
+	static  JComboBox<Object> 	rightComboBox;
+	private JMenuItem 			mntmNewMenuItem;
+	private UnitFactory 		unitFactory;
+	private JMenuBar 			menuBar;
+	private JMenu 				mnUnitType;
 
 	/*
 	 Initial Distance Converter value and unit converter
 	 * */
 	public App() {
 		setTitle("Unit Converter");
+		unitFactory = UnitFactory.getInstance();
 		initComponent();
+		
 	}
 	
 	/**
@@ -76,7 +87,17 @@ public class App extends JFrame {
 		});
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 671, 80);
+		setBounds(100, 100, 671, 100);
+		
+		menuBar = new JMenuBar();
+		menuBar.setBackground(Color.LIGHT_GRAY);
+		setJMenuBar(menuBar);
+		
+		mnUnitType = new JMenu("Unit Type");
+		menuBar.add(mnUnitType);
+		
+		setMenu();
+		mnUnitType.add(mntmNewMenuItem);
 		setContentPane(mainPane);
 		mainPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		mainPane.add(leftTextField);
@@ -87,19 +108,28 @@ public class App extends JFrame {
 		
 	}
 	
+	private void setMenu() {
+		UnitType[] unitType = unitFactory.getUnitTypes();
+		for(UnitType type : unitType){
+			mntmNewMenuItem = new JMenuItem(String.valueOf(type));
+			mntmNewMenuItem.addActionListener( new UnitAction(type.getUnit()) );
+			mnUnitType.add(mntmNewMenuItem);
+		}
+	}
+	
 	/**
 	 * @param choice is a enum that contained user's deicsion to type the input on the left or on the right texfield
 	 * this program will convert unit automatically depend on user choice.
 	 * So when user's input is not a number or user remove thier input, Program will set the both side of textfield to be empty 
 	 * */
 	
-	public void typeValue(Choice choice) {
+	private void typeValue(Choice choice) {
 		if(choice.equals(Choice.LEFT)){
 			try {
 				double amount = Double.parseDouble(leftTextField.getText());
 				if(amount > 0) {
-					Length fromUnit = (Length) leftComboBox.getSelectedItem();
-					Length toUnit = (Length) rightComboBox.getSelectedItem();
+					Unit fromUnit = (Unit) leftComboBox.getSelectedItem();
+					Unit toUnit = (Unit) rightComboBox.getSelectedItem();
 					String result = String.valueOf(String.format("%.6f", unitFactory.convert(amount, fromUnit, toUnit)));
 					rightTextField.setText(result);
 				}
@@ -114,8 +144,8 @@ public class App extends JFrame {
 			try {
 				double amount = Double.parseDouble(rightTextField.getText());
 				if(amount > 0) {
-					Length fromUnit = (Length) rightComboBox.getSelectedItem();
-					Length toUnit = (Length) leftComboBox.getSelectedItem();
+					Unit fromUnit = (Unit) rightComboBox.getSelectedItem();
+					Unit toUnit = (Unit) leftComboBox.getSelectedItem();
 					String result = String.valueOf(String.format("%.6f", unitFactory.convert(amount, fromUnit, toUnit)));
 					leftTextField.setText(result);
 				}
@@ -123,11 +153,9 @@ public class App extends JFrame {
 					leftTextField.setText("");
 				}
 			} catch(NumberFormatException e){
-				System.out.println("Please input value in number format");
 				leftTextField.setText("");
+				leftTextField.setForeground(Color.RED);
 			}
 		}
 	}
-	
-
 }
