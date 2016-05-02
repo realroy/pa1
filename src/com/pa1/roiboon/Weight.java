@@ -18,18 +18,33 @@ public enum Weight implements Unit {
 	private double value;
 	private String name;
 	
+	/**Initial value of Weight
+	 * @param name of unit
+	 * @param value(in gram) of unit
+	 * */
 	private Weight(String name, double value) {
 		this.name 	= name;
 		this.value 	= value;
 	}
 	
+	/**get the unit's name
+	*@return name of unit
+	*/
 	public String getName() {
 		return this.name;
 	}
+	
+	/**get the unit's name
+	*@return name of unit
+	*/
 	@Override
 	public double getValue() {
 		return this.value;
 	}
+	
+	/**
+	* @see java.lang.Object#toString()
+	*/
 	@Override
 	public String toString() {
 		return this.name;

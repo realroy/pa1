@@ -17,6 +17,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import java.awt.Color;
 import javax.swing.JMenuItem;
+import javax.swing.JButton;
 
 
 @SuppressWarnings("serial")
@@ -32,6 +33,7 @@ public class App extends JFrame {
 	private UnitFactory 		unitFactory;
 	private JMenuBar 			menuBar;
 	private JMenu 				mnUnitType;
+	private JButton btnClear;
 
 	/*
 	 Initial Distance Converter value and unit converter
@@ -106,8 +108,17 @@ public class App extends JFrame {
 		mainPane.add(rightTextField);
 		mainPane.add(rightComboBox);
 		
+		btnClear = new JButton("Clear");
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				leftTextField.setText("");
+				rightTextField.setText("");
+			}
+		});
+		mainPane.add(btnClear);
+		
 	}
-	
+	/*Auto setting menu*/
 	private void setMenu() {
 		UnitType[] unitType = unitFactory.getUnitTypes();
 		for(UnitType type : unitType){
@@ -120,7 +131,7 @@ public class App extends JFrame {
 	/**
 	 * @param choice is a enum that contained user's deicsion to type the input on the left or on the right texfield
 	 * this program will convert unit automatically depend on user choice.
-	 * So when user's input is not a number or user remove thier input, Program will set the both side of textfield to be empty 
+	 * So when user's input is not a number, Program will set the both side of textfield to be red 
 	 * */
 	
 	private void typeValue(Choice choice) {

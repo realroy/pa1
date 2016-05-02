@@ -4,6 +4,14 @@ package com.pa1.roiboon;
  */
 
 public interface Unit {
+	
+	/**
+	 * return value of unit
+	 * */
 	double getValue();
+	
+	/**
+	 * return unit detail in string
+	 * */
 	String toString();
 }
