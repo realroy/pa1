@@ -127,34 +127,41 @@ public class App extends JFrame {
 		if(choice.equals(Choice.LEFT)){
 			try {
 				double amount = Double.parseDouble(leftTextField.getText());
-				if(amount > 0) {
+				if(amount >= 0) {
+					leftTextField.setForeground(Color.BLACK);
+					rightTextField.setForeground(Color.BLACK);
 					Unit fromUnit = (Unit) leftComboBox.getSelectedItem();
 					Unit toUnit = (Unit) rightComboBox.getSelectedItem();
 					String result = String.valueOf(String.format("%.6f", unitFactory.convert(amount, fromUnit, toUnit)));
 					rightTextField.setText(result);
 				}
 				else {
-					rightTextField.setText("");
+					leftTextField.setForeground(Color.RED);
+					rightTextField.setForeground(Color.RED);
 				}
-			} catch(NumberFormatException e){
-					rightTextField.setText("");
+			}
+			catch(Exception e){
+				leftTextField.setForeground(Color.RED);
+				rightTextField.setForeground(Color.RED);
 			}
 		}
 		else if(choice.equals(Choice.RIGHT)) {
 			try {
 				double amount = Double.parseDouble(rightTextField.getText());
-				if(amount > 0) {
+				if(amount >= 0) {
+					rightTextField.setForeground(Color.BLACK);
+					leftTextField.setForeground(Color.BLACK);
 					Unit fromUnit = (Unit) rightComboBox.getSelectedItem();
 					Unit toUnit = (Unit) leftComboBox.getSelectedItem();
 					String result = String.valueOf(String.format("%.6f", unitFactory.convert(amount, fromUnit, toUnit)));
 					leftTextField.setText(result);
 				}
 				else {
-					leftTextField.setText("");
+					leftTextField.setForeground(Color.RED);
 				}
-			} catch(NumberFormatException e){
-				leftTextField.setText("");
+			}catch(Exception e){
 				leftTextField.setForeground(Color.RED);
+				rightTextField.setForeground(Color.RED);
 			}
 		}
 	}
